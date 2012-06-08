@@ -96,10 +96,23 @@ function draw() {
 
 	if (result.length == 1) {
 
-		var ratioX = 1 - result[0].x / (workWidth  - result[0].width);
-		var ratioY = 1 - result[0].y / (workHeight - result[0].height);
-		frequency = Math.pow(2, (ratioX + ratioY / 10) * 60 / 12) * 440 / 2;
-		volume    = 1;
+		var x = result[0].x;
+		var y = result[0].y;
+		var width = result[0].width;
+		var height = result[0].height;
+
+		var ratioX = 1 - x / (workWidth  - width);
+		var ratioY = 1 - y / (workHeight - height);
+
+		frequency = Math.pow(
+			2,
+			(
+				Math.min(width, height) / Math.min(x, y) / 1 +
+					ratioX / 0.25 +
+					ratioY / 1
+			)  / 12
+		) * 440 / 2;
+		volume    = Math.min(1, volume * 0.95 + 0.05);
 
 		var rectX      = result[0].x / workWidth * displayWidth;
 		var rectY      = result[0].y / workHeight * displayHeight;
@@ -124,7 +137,7 @@ function draw() {
 
 	} else {
 		ccv.grayscale(display);
-		volume*=0.8;
+		volume *= 0.9;
 	}
 
 	setTimeout(draw, 0);
