@@ -83,7 +83,7 @@ function repeat() {
 		{
 			"canvas"        : grayscale,
 			"cascade"       : cascade,
-			"interval"      : 1,
+			"interval"      : 5,
 			"min_neighbors" : 1
 		}
 	);
@@ -107,12 +107,11 @@ function repeat() {
 		frequency = Math.pow(
 			2,
 			(
-				Math.min(width, height) / Math.min(x, y) / 1 +
-					ratioX / 0.25 +
-					ratioY / 1
+				Math.min(x, y) / Math.min(width, height) / 0.5 +
+					ratioX / 0.25 +0
 			)  / 12
 		) * 440 / 2;
-		volume    = Math.min(1, volume * 0.95 + 0.05);
+		volume    = Math.min(1, volume * 0.9 + ratioY * 0.1);
 
 		var rectX      = result[0].x / workWidth * displayWidth;
 		var rectY      = result[0].y / workHeight * displayHeight;
