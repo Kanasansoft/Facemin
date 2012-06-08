@@ -67,7 +67,7 @@ function onAudioProcess(e) {
 
 }
 
-function draw() {
+function repeat() {
 
 	workContext.drawImage(
 		video,
@@ -140,7 +140,7 @@ function draw() {
 		volume *= 0.9;
 	}
 
-	setTimeout(draw, 0);
+	setTimeout(repeat, 0);
 
 }
 
@@ -169,7 +169,7 @@ function initialize() {
 			work.height     = workHeight;
 			display.style.width   = Math.round(displayWidth).toString(10) + "px";
 			display.style.height  = Math.round(displayHeight).toString(10) + "px";
-			draw();
+			repeat();
 		},
 		false
 	);
