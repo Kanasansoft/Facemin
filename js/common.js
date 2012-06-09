@@ -134,9 +134,9 @@ function repeat() {
 		frequency = Math.pow(
 			2,
 			(
-				Math.min(x, y) / Math.min(width, height) / 0.5 +
-					ratioX / 0.25 +0
-			)  / 12
+				Math.min(x, y) / Math.min(width, height) / 0.25 +
+				ratioX / 0.125
+			) / 12
 		) * 440 / 2;
 		volume    = Math.min(1, volume * 0.9 + ratioY * 0.1);
 
