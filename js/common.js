@@ -131,14 +131,16 @@ function repeat() {
 		var ratioX = 1 - x / (workWidth  - width);
 		var ratioY = 1 - y / (workHeight - height);
 
-		frequency = Math.pow(
+		var frequencyNext = Math.pow(
 			2,
 			(
 				Math.min(x, y) / Math.min(width, height) / 0.25 +
 				ratioX / 0.125
 			) / 12
 		) * 440 / 2;
-		volume    = Math.min(1, volume * 0.9 + ratioY * 0.1);
+		frequency = frequency * 0.9 +frequencyNext * 0.1;
+		var volumeNext = 1 - Math.abs(ratioY - 0.5) * 2;
+		volume = Math.min(1,volume * 0.9 + volumeNext * 0.1);
 
 		var rectX      = result[0].x / workWidth * displayWidth;
 		var rectY      = result[0].y / workHeight * displayHeight;
