@@ -22,7 +22,9 @@ var javaScriptnode = audioContext.createJavaScriptNode(bufferSize, 0, 2);
 
 var frequency = 440;
 var volume    = 0;
-var position  = 0;
+
+var lastAudioValue    = 0;
+var preLastAudioValue = 0;
 
 function attachUserMedia(videoElement) {
 	if ("getUserMedia" in navigator) {
@@ -51,17 +53,42 @@ function attachUserMedia(videoElement) {
 	}
 }
 
+function getAudioValue(position) {
+	return Math.sin(2 * Math.PI * frequency * (position / sampleRate));
+}
+
 function onAudioProcess(e) {
 
 	var outputL = e.outputBuffer.getChannelData(0);
 	var outputR = e.outputBuffer.getChannelData(1);
 	var bufferData = new Float32Array(bufferSize);
 
+	var position = 0;
+
+	while(position < 100000){
+		position++;
+		var fastAudioValue     = getAudioValue(position + 0);
+		var postFastAudioValue = getAudioValue(position + 1);
+		if((preLastAudioValue - lastAudioValue) * (fastAudioValue - postFastAudioValue) > 0 && (preLastAudioValue + lastAudioValue) * (fastAudioValue + postFastAudioValue) > 0){
+			if(preLastAudioValue - lastAudioValue > 0 && lastAudioValue - fastAudioValue > 0){
+				break;
+			}
+			if(preLastAudioValue - lastAudioValue < 0 && lastAudioValue - fastAudioValue < 0){
+				break;
+			}
+		}
+		if(preLastAudioValue * lastAudioValue < 0 && fastAudioValue * postFastAudioValue < 0){
+			break;
+		}
+	}
+
 	for (var i = 0; i < bufferSize; i++) {
-		bufferData[i] = Math.sin(2 * Math.PI * frequency * (position / sampleRate)) * volume;
+		bufferData[i] = getAudioValue(position) * volume;
 		position++;
 	}
 
+	preLastAudioValue = getAudioValue(position - 2);
+	lastAudioValue    = getAudioValue(position - 1);
 	outputL.set(bufferData);
 	outputR.set(bufferData);
 
