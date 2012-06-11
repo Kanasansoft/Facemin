@@ -17,7 +17,7 @@ var workScale = 0.125;
 
 var audioContext   = new webkitAudioContext();
 var sampleRate     = audioContext.sampleRate;
-var	bufferSize     = 4096;
+var bufferSize     = 4096;
 var javaScriptnode = audioContext.createJavaScriptNode(bufferSize, 0, 2);
 
 var frequency = 440;
